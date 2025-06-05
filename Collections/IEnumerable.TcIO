@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="IEnumerable" Id="{0588ef28-a449-0354-0335-eef0f6bad1aa}">
+    <Declaration><![CDATA[INTERFACE IEnumerable EXTENDS IObject]]></Declaration>
+    <Method Name="GetDefaultEnumerator" Id="{89831ea0-8c1e-0630-3848-ccf63e8a9c7d}">
+      <Declaration><![CDATA[METHOD GetDefaultEnumerator : IEnumerator]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

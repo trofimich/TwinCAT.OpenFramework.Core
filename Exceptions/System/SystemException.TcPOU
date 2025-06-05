@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="SystemException" Id="{1b58d32f-991d-4ec9-b02b-fa3d7b05310c}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'enable_dynamic_creation'}	
+{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+FUNCTION_BLOCK SystemException EXTENDS Exception
+VAR_OUTPUT
+	ExceptionCode : __SYSTEM.ExceptionCode;
+END_VAR
+VAR
+	_ClassName : STRING := __POUNAME();
+END_VAR
+VAR CONSTANT
+	SYSTEM_EXCEPTION_PREFIX : WSTRING(16) := "System exception";
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ClassName" Id="{73a149e3-3220-471d-a1ad-7494da20cf52}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{d71f7ef0-9e8f-4ea2-b497-6e6686075599}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clone" Id="{8b49f8d2-6d82-49b5-8d6e-408b71564803}">
+      <Declaration><![CDATA[METHOD Clone : IObject
+VAR
+	exceptionClone : POINTER TO SystemException;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[exceptionClone := __NEW(SystemException);
+
+exceptionClone^.ExceptionCode := ExceptionCode;
+exceptionClone^.LocalTimestamp := LocalTimestamp;
+exceptionClone^.UtcTimestamp := UtcTimestamp;
+
+Clone := exceptionClone^;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Empty" Id="{d5db7a3a-5de8-4652-ad37-855d34af2308}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{675138b3-6f7b-43eb-a3ed-84a0bcc333a4}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Empty := TRUE;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="FB_init" Id="{497ce1c3-892b-4883-8e8d-a6ddc2d87897}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start)*)
+	bInitRetains	: BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change)*)
+	bInCopyCode	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Fatal := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetMessage" Id="{46d721ff-d5fa-4124-8f00-2e4a6a4dd504}">
+      <Declaration><![CDATA[METHOD GetMessage : ERROR_MESSAGE
+VAR_INPUT
+	showTimestamp : BOOL := FALSE;
+	showSource : BOOL := FALSE;
+END_VAR
+VAR
+	stringBuilder : WideStringBuilder;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ExceptionCode <> __SYSTEM.ExceptionCode.RTSEXCPT_NOEXCEPTION THEN
+	stringBuilder
+		.AppendString(SYSTEM_EXCEPTION_PREFIX)
+		.Append(ExceptionCode);
+			
+	IF showTimestamp THEN
+		stringBuilder.AppendString(TIME_PREFIX);
+		AppendTimestampDescription(stringBuilder);
+	END_IF
+
+	stringBuilder.AssignToString(GetMessage);
+ELSE
+	GetMessage := "";
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetExceptionCode" Id="{61ae7db7-04e4-4d87-a019-03393ced6b17}">
+      <Declaration><![CDATA[METHOD INTERNAL SetExceptionCode
+VAR_IN_OUT CONSTANT
+	exceptionCode : __SYSTEM.ExceptionCode;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.ExceptionCode := exceptionCode;
+THIS^.LocalTimestamp := DateTimeHelper.SystemLocalDateTime;
+THIS^.UtcTimestamp := DateTimeHelper.SystemUtcDateTime;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

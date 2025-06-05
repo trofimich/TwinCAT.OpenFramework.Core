@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="Exception" Id="{2c867dd1-35d5-4b22-aba9-7dd48de148f5}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'enable_dynamic_creation'}	
+{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+FUNCTION_BLOCK ABSTRACT Exception EXTENDS Object IMPLEMENTS IException
+VAR
+	_Fatal : BOOL; 	
+	_SourceNamespaceName : STRING;
+	_SourceClassName : STRING;
+	_SourceMethodName : STRING;
+	_SourcePosition : STRING;
+	_LocalTimestamp : DATE_AND_TIME;	
+	_UtcTimestamp : DATE_AND_TIME;	
+END_VAR
+VAR CONSTANT
+	PATH_DELIMITER : WSTRING(1) := ".";
+	UNSPECIFIED_METHOD : WSTRING(20) := "<unspecified method>";
+	TIME_PREFIX : WSTRING(4) := " at ";
+	SOURCE_PREFIX : WSTRING(4) := " in ";
+	ERROR_CODE_PREFIX : WSTRING(13) := ", error code ";	
+	LINE_NUMBER_PREFIX : WSTRING(13) := " line ";	
+	INNER_MESSAGE_PREFIX : WSTRING(4) := " -> ";
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Service members" Id="{7fcae734-384a-4348-b662-c86a9b6ee9b5}" />
+    <Method Name="AppendProgramOrganizationUnitFullName" Id="{8b619731-2c00-46d9-91ce-b530c604c931}" FolderPath="Service members\">
+      <Declaration><![CDATA[METHOD PROTECTED AppendProgramOrganizationUnitFullName
+VAR_IN_OUT CONSTANT
+	stringBuilder : WideStringBuilder;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stringBuilder
+	.AppendIf(_SourceNamespaceName, SourceNamespaceName <> '')
+	.AppendStringIf(PATH_DELIMITER, SourceNamespaceName <> '')
+	.AppendIf(_SourceClassName, SourceClassName <> '')
+	.AppendStringIf(PATH_DELIMITER, SourceClassName <> '')
+	.AppendIf(_SourceMethodName, SourceMethodName <> '')
+	.AppendStringIf(UNSPECIFIED_METHOD, SourceMethodName = '');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AppendSourceDescription" Id="{232ae1fb-919d-444e-a1b1-41423c0a2e61}" FolderPath="Service members\">
+      <Declaration><![CDATA[METHOD PROTECTED AppendSourceDescription
+VAR_IN_OUT CONSTANT
+	stringBuilder : WideStringBuilder;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AppendProgramOrganizationUnitFullName(stringBuilder);
+
+stringBuilder
+	.AppendStringIf(LINE_NUMBER_PREFIX, SourcePosition <> '')
+	.AppendIf(_SourcePosition, SourcePosition <> '');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AppendTimestampDescription" Id="{2603d8b7-93f6-4d37-b896-c4502bdc4dce}" FolderPath="Service members\">
+      <Declaration><![CDATA[METHOD PROTECTED AppendTimestampDescription
+VAR_IN_OUT CONSTANT
+	stringBuilder : WideStringBuilder;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stringBuilder
+	.Append(_LocalTimestamp)
+	.AppendString(" (")
+	.Append(_UtcTimestamp)
+	.AppendString("UTC)");]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clone" Id="{5ebd59ef-8f06-4536-82ff-256e85b923d6}">
+      <Declaration><![CDATA[METHOD ABSTRACT Clone : IObject]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Empty" Id="{5808a72a-29e6-41ff-a698-14358227f440}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ABSTRACT Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{baf9f777-1bbb-46e3-a0e2-7b890beb87c1}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Fatal" Id="{c5832d03-a61c-4285-ad48-f70a09db5cc4}">
+      <Declaration><![CDATA[// Work is not possible after such error
+{attribute 'monitoring' := 'call'}
+PROPERTY Fatal : BOOL]]></Declaration>
+      <Get Name="Get" Id="{bd66e01d-04bc-4ecf-9bbf-76e999d0693f}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Fatal := _Fatal;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{78a9683e-7789-4360-aa2a-0c4ebea628b6}">
+        <Declaration><![CDATA[PROTECTED]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Fatal := Fatal;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="GetMessage" Id="{b01f2e4b-f57f-4a9e-9bb1-0d11fe56eeb6}">
+      <Declaration><![CDATA[METHOD ABSTRACT GetMessage : ERROR_MESSAGE
+VAR_INPUT
+	showTimestamp : BOOL := FALSE;
+	showSource : BOOL := FALSE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetSourceDescription" Id="{4b3d6002-41a8-4524-9636-7a2f25a8d478}">
+      <Declaration><![CDATA[METHOD GetSourceDescription : WSTRING(300)
+VAR
+	stringBuilder : WideStringBuilder;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AppendSourceDescription(stringBuilder);
+
+stringBuilder.AssignToString(GetSourceDescription);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="LocalTimestamp" Id="{440a2ace-f694-4eeb-8122-2b10d9458da0}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY LocalTimestamp : DATE_AND_TIME]]></Declaration>
+      <Get Name="Get" Id="{c53a1132-41e2-418b-b336-bd0a0d1f095b}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[LocalTimestamp := _LocalTimestamp;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{29a6d1f5-af60-43ea-8bf5-4492964b6fc2}">
+        <Declaration><![CDATA[PROTECTED]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_LocalTimestamp := LocalTimestamp;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SourceClassName" Id="{b6bf95b3-05bb-41c1-baf2-adec7e4807a2}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourceClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{da8e8243-9de1-4f25-9aef-7229c118af25}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SourceClassName := _SourceClassName;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f9b92e01-f998-4ca4-b6d7-455ed4a82e72}">
+        <Declaration><![CDATA[PROTECTED]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_SourceClassName := SourceClassName;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SourceMethodName" Id="{b0b11d8f-b57d-436d-a30b-45c5828bcad7}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourceMethodName : STRING]]></Declaration>
+      <Get Name="Get" Id="{430fe027-4455-4395-b14b-1ccf8dd03c14}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SourceMethodName := _SourceMethodName;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9d5e5bf5-fffc-43c7-b803-fd8e6fd15bef}">
+        <Declaration><![CDATA[PROTECTED]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_SourceMethodName := SourceMethodName;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SourceNamespaceName" Id="{69392083-68c6-4dcd-bb09-4e25ac9807d1}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourceNamespaceName : STRING]]></Declaration>
+      <Get Name="Get" Id="{b37bec38-ccba-44a5-adba-4d95aa902bc2}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SourceNamespaceName := _SourceNamespaceName;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{89292779-957c-4b86-a678-d58842d0ba8f}">
+        <Declaration><![CDATA[PROTECTED]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_SourceNamespaceName := SourceNamespaceName;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SourcePosition" Id="{3841f015-137e-4d98-b3a5-a880f1f999fe}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourcePosition : STRING]]></Declaration>
+      <Get Name="Get" Id="{2126c131-19e6-4818-8020-5003129f9123}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SourcePosition := _SourcePosition;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{5d557cbc-73a7-412c-88fc-e096352966b1}">
+        <Declaration><![CDATA[PROTECTED]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_SourcePosition := SourcePosition;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="UtcTimestamp" Id="{e428f86e-5f4a-4af4-a349-fca47e15fa8e}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY UtcTimestamp : DATE_AND_TIME]]></Declaration>
+      <Get Name="Get" Id="{2bb3d289-0f15-49af-b239-4833a8a2dc7b}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[UtcTimestamp := _UtcTimestamp;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{8bca7369-3782-4526-91b9-39c4010a000e}">
+        <Declaration><![CDATA[PROTECTED]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_UtcTimestamp := UtcTimestamp;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

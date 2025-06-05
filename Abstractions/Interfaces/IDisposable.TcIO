@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="IDisposable" Id="{741731d5-d4c2-417d-b103-36d0222459a8}">
+    <Declaration><![CDATA[INTERFACE IDisposable EXTENDS __System.IQueryInterface
+]]></Declaration>
+    <Method Name="Dispose" Id="{34c9bfbf-6577-4284-bd10-d202ab5bd94a}">
+      <Declaration><![CDATA[METHOD Dispose]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

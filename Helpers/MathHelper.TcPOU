@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MathHelper" Id="{a7efcd16-5417-4251-b582-b89de7d35241}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MathHelper
+VAR
+	_Random : DRAND;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="ConvertDegreesToRadians" Id="{a1cc6396-945d-4511-874b-e949879872ed}">
+      <Declaration><![CDATA[METHOD ConvertDegreesToRadians : LREAL
+VAR_INPUT
+	degrees : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ConvertDegreesToRadians := degrees * PI / 180;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ConvertRadiansToDegrees" Id="{2430e7d9-3523-44e4-8fc2-7240cac52474}">
+      <Declaration><![CDATA[METHOD ConvertRadiansToDegrees : LREAL
+VAR_INPUT
+	radiand : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ConvertRadiansToDegrees := radiand * 180 / PI;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetRandomValue" Id="{d36ecec8-180d-459b-b59c-dfd7219a70ef}">
+      <Declaration><![CDATA[METHOD GetRandomValue : LREAL
+VAR_INPUT
+	seed : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_Random(Seed := seed, Num => GetRandomValue);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetRandomWithDispersion" Id="{6de37dc6-155b-4776-bf24-269532044c36}">
+      <Declaration><![CDATA[METHOD GetRandomWithDispersion : LREAL
+VAR_INPUT
+	baseValue : LREAL;
+	dispersion : LREAL;	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetRandomWithDispersion := baseValue - dispersion + (dispersion * 2 * MathHelper.GetRandomValue(0));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetRandomWithDispersionEx" Id="{19d7d84f-24f3-412d-8955-cd454d1deaa8}">
+      <Declaration><![CDATA[METHOD GetRandomWithDispersionEx : LREAL
+VAR_INPUT
+	minValue : LREAL;
+	baseValue : LREAL;
+	maxValue : LREAL;
+	dispersion : LREAL;	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetRandomWithDispersionEx := baseValue - dispersion + (dispersion * 2 * MathHelper.GetRandomValue(0));
+
+IF GetRandomWithDispersionEx < minValue THEN
+	GetRandomWithDispersionEx := minValue;
+ELSIF GetRandomWithDispersionEx > maxValue THEN
+	GetRandomWithDispersionEx := maxValue;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Truncate" Id="{78443544-2fdf-461c-8dde-3cbf14a580ad}">
+      <Declaration><![CDATA[METHOD Truncate : LREAL
+VAR_INPUT
+	value : LREAL;
+	precission : BYTE;
+END_VAR
+VAR 
+	i : INT;
+	factor : LREAL := 1;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 1 TO precission DO
+	factor := factor * 10;
+END_FOR
+
+Truncate := TO_LREAL(TRUNC(value * factor)) / factor;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

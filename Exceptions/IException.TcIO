@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="IException" Id="{caff1866-0f9b-4e36-b260-910e7bfc0353}">
+    <Declaration><![CDATA[INTERFACE IException EXTENDS ICloneable, IDisposable]]></Declaration>
+    <Property Name="Empty" Id="{25b8c57a-0611-4706-b19f-deba850a89a2}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{f838ff35-75a3-4ad5-bd8e-9ac9838a6630}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="Fatal" Id="{93722645-b906-4ffe-93f7-57fbb57c0145}">
+      <Declaration><![CDATA[// Work is not possible after such error
+{attribute 'monitoring' := 'call'}
+PROPERTY Fatal : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d363ce08-9b37-4b04-b541-b06f2d31dacd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="GetMessage" Id="{7b66ed6d-5736-455f-92e5-65684040fe96}">
+      <Declaration><![CDATA[METHOD ABSTRACT GetMessage : ERROR_MESSAGE
+VAR_INPUT
+	showTimestamp : BOOL := FALSE;
+	showSource : BOOL := FALSE;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="GetSourceDescription" Id="{6e55cfa5-5e73-40c0-b071-94c80fd4e94b}">
+      <Declaration><![CDATA[METHOD GetSourceDescription : WSTRING(300)]]></Declaration>
+    </Method>
+    <Property Name="LocalTimestamp" Id="{c580f25c-c9d6-4edd-b7f2-7d2edb254f55}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY LocalTimestamp : DATE_AND_TIME]]></Declaration>
+      <Get Name="Get" Id="{916b6ceb-799e-4205-b0c7-8d3852774d09}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="SourceClassName" Id="{5a243ba5-73c4-4cfc-9f2e-ffe109e71d56}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourceClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{ca29c5ae-2675-4da4-9d0a-6c7c6a8011da}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="SourceMethodName" Id="{2c25585e-db6a-4cb5-bc5a-f5aefb7bed75}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourceMethodName : STRING]]></Declaration>
+      <Get Name="Get" Id="{ef7847db-9f26-4d55-aa40-5977df244e81}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="SourceNamespaceName" Id="{cfd95665-a526-466d-a901-141b4ef85bc8}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourceNamespaceName : STRING]]></Declaration>
+      <Get Name="Get" Id="{15d9a2f0-18d6-4866-bc2b-37b4843d568e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="SourcePosition" Id="{db58661c-fcd2-48fc-a5bc-720832b2108f}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY SourcePosition : STRING]]></Declaration>
+      <Get Name="Get" Id="{ad269437-ab13-43aa-95c4-15844fdca9a0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="UtcTimestamp" Id="{077fe9d3-5bc6-4131-a1e5-d9ea74c7afba}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY UtcTimestamp : DATE_AND_TIME]]></Declaration>
+      <Get Name="Get" Id="{58d561a0-2165-4db6-86fa-f9e4e2a7c078}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

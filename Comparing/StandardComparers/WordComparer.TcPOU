@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="WordComparer" Id="{aaff1079-39b9-4343-b27c-de794335a432}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK WordComparer EXTENDS Object IMPLEMENTS IComparer
+VAR
+	_ClassName : STRING := __POUNAME();
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ClassName" Id="{b602ea04-0ad3-47bc-a159-f97d8b0ee470}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{278d52ba-e7d4-49af-af63-30350cfc7bf9}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Compare" Id="{2e6b63b0-9a86-4225-9989-cdc2dadc2322}">
+      <Declaration><![CDATA[{attribute "object_name" := "Compare"}
+METHOD Compare : COMPARISION_RESULT
+VAR_INPUT
+	left : PVOID;
+	right : PVOID;
+END_VAR
+VAR
+	leftPointer : POINTER TO WORD; 
+	rightPointer : POINTER TO WORD; 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF left = 0 AND right = 0 THEN
+	Compare := COMPARISION_RESULT.EQUALS;
+	RETURN;
+END_IF
+
+IF left = 0 THEN
+	Compare := COMPARISION_RESULT.LEFT_LESS_RIGHT;
+	RETURN;	
+END_IF
+
+IF right = 0 THEN
+	Compare := COMPARISION_RESULT.LEFT_GREATER_RIGHT;
+	RETURN;	
+END_IF
+
+leftPointer := left;
+rightPointer := right;
+
+IF leftPointer^ < rightPointer^ THEN
+	Compare := COMPARISION_RESULT.LEFT_LESS_RIGHT;
+ELSIF leftPointer^ > rightPointer^ THEN
+	Compare := COMPARISION_RESULT.LEFT_GREATER_RIGHT;
+ELSE
+	Compare := COMPARISION_RESULT.EQUALS;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="LTimeComparer" Id="{936c530c-180a-4a57-8a07-504723f81151}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK LTimeComparer EXTENDS Object IMPLEMENTS IComparer
+VAR
+	_ClassName : STRING := __POUNAME();
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ClassName" Id="{1b524590-2243-4936-9b2b-5ec1cb64b6b1}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{fd4e222b-546c-476b-87bd-765c7c278818}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Compare" Id="{77d77d19-8281-4988-b2d8-7a7c6ba09c76}">
+      <Declaration><![CDATA[{attribute "object_name" := "Compare"}
+METHOD Compare : COMPARISION_RESULT
+VAR_INPUT
+	left : PVOID;
+	right : PVOID;
+END_VAR
+VAR
+	leftPointer : POINTER TO LTIME; 
+	rightPointer : POINTER TO LTIME; 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF left = 0 AND right = 0 THEN
+	Compare := COMPARISION_RESULT.EQUALS;
+	RETURN;
+END_IF
+
+IF left = 0 THEN
+	Compare := COMPARISION_RESULT.LEFT_LESS_RIGHT;
+	RETURN;	
+END_IF
+
+IF right = 0 THEN
+	Compare := COMPARISION_RESULT.LEFT_GREATER_RIGHT;
+	RETURN;	
+END_IF
+
+leftPointer := left;
+rightPointer := right;
+
+IF leftPointer^ < rightPointer^ THEN
+	Compare := COMPARISION_RESULT.LEFT_LESS_RIGHT;
+ELSIF leftPointer^ > rightPointer^ THEN
+	Compare := COMPARISION_RESULT.LEFT_GREATER_RIGHT;
+ELSE
+	Compare := COMPARISION_RESULT.EQUALS;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

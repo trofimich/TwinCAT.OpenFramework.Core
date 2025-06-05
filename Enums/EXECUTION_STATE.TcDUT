@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="EXECUTION_STATE" Id="{b2174ac7-0723-40e0-a740-a76fbb590f39}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+// error should be reported using exceptions
+TYPE EXECUTION_STATE :
+(
+	BUSY,
+	DONE
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

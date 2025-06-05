@@ -1,0 +1,888 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="WideStringHelper" Id="{f2b62380-bf78-436f-91e7-3a8440654572}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'Direct call is not allowed'} 
+PROGRAM WideStringHelper
+VAR_OUTPUT
+	NewLine : WSTRING(1) := TO_WSTRING(Tc2_System.F_ToCHR(10)); 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Service members" Id="{1ecfbf1d-7d0e-4566-abbe-72e054ea0151}" />
+    <Method Name="AnyToString" Id="{17d38b2c-68d3-4c9b-bfdc-5b5dcbc0e3da}">
+      <Declaration><![CDATA[METHOD AnyToString : WSTRING(255)
+VAR_INPUT
+	value : ANY;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AnyToString := InternalAnyToString(value);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append" Id="{0abbeab1-87d6-445a-be7e-01028a2ee5d0}">
+      <Declaration><![CDATA[METHOD Append : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..1] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString);
+
+Append := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append1" Id="{8ae54d0a-d199-4ca5-bf1a-a8dc731fbbed}">
+      <Declaration><![CDATA[METHOD Append1 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..1] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+
+Append1 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append10" Id="{106fd8f3-40e3-49ce-be34-e9479f5ee394}">
+      <Declaration><![CDATA[METHOD Append10 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+	sourceString8 : WSTRING(255);
+	sourceString9 : WSTRING(255);
+	sourceString10 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..10] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+sources[8] := ADR(sourceString8);
+sources[9] := ADR(sourceString9);
+sources[10] := ADR(sourceString10);
+
+Append10 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append11" Id="{644a0f0e-2a23-4b37-9fd4-a5d2202bd213}">
+      <Declaration><![CDATA[METHOD Append11 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+	sourceString8 : WSTRING(255);
+	sourceString9 : WSTRING(255);
+	sourceString10 : WSTRING(255);
+	sourceString11 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..11] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+sources[8] := ADR(sourceString8);
+sources[9] := ADR(sourceString9);
+sources[10] := ADR(sourceString10);
+sources[11] := ADR(sourceString11);
+
+Append11 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append12" Id="{b9cb490d-cc36-4845-abc9-daa49db194d5}">
+      <Declaration><![CDATA[METHOD Append12 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+	sourceString8 : WSTRING(255);
+	sourceString9 : WSTRING(255);
+	sourceString10 : WSTRING(255);
+	sourceString11 : WSTRING(255);
+	sourceString12 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..12] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+sources[8] := ADR(sourceString8);
+sources[9] := ADR(sourceString9);
+sources[10] := ADR(sourceString10);
+sources[11] := ADR(sourceString11);
+sources[12] := ADR(sourceString12);
+
+Append12 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append13" Id="{e23ffdb6-afbd-44c5-ac8c-bd29f56db185}">
+      <Declaration><![CDATA[METHOD Append13 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+	sourceString8 : WSTRING(255);
+	sourceString9 : WSTRING(255);
+	sourceString10 : WSTRING(255);
+	sourceString11 : WSTRING(255);
+	sourceString12 : WSTRING(255);
+	sourceString13 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..13] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+sources[8] := ADR(sourceString8);
+sources[9] := ADR(sourceString9);
+sources[10] := ADR(sourceString10);
+sources[11] := ADR(sourceString11);
+sources[12] := ADR(sourceString12);
+sources[13] := ADR(sourceString13);
+
+Append13 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append14" Id="{05124919-d825-4d99-b37e-7b43602ef124}">
+      <Declaration><![CDATA[METHOD Append14 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+	sourceString8 : WSTRING(255);
+	sourceString9 : WSTRING(255);
+	sourceString10 : WSTRING(255);
+	sourceString11 : WSTRING(255);
+	sourceString12 : WSTRING(255);
+	sourceString13 : WSTRING(255);
+	sourceString14 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..14] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+sources[8] := ADR(sourceString8);
+sources[9] := ADR(sourceString9);
+sources[10] := ADR(sourceString10);
+sources[11] := ADR(sourceString11);
+sources[12] := ADR(sourceString12);
+sources[13] := ADR(sourceString13);
+sources[14] := ADR(sourceString14);
+
+Append14 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append2" Id="{f2762a28-ba20-4da3-bca6-4d7342e6ccc1}">
+      <Declaration><![CDATA[METHOD Append2 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..2] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+
+Append2 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append3" Id="{a901e39c-74fb-456f-83c3-b55c09434265}">
+      <Declaration><![CDATA[METHOD Append3 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..3] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+
+Append3 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append4" Id="{f16e517b-f218-46a2-baa0-b252e491b074}">
+      <Declaration><![CDATA[METHOD Append4 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..4] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+
+Append4 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append5" Id="{651a3a52-6221-4a6d-9676-2c7128c556a2}">
+      <Declaration><![CDATA[METHOD Append5 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..5] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+
+Append5 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append6" Id="{074d6c00-dbe9-4615-9fd1-f2449fdc2a24}">
+      <Declaration><![CDATA[METHOD Append6 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..6] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+
+Append6 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append7" Id="{04973c34-3a08-42d5-b49e-39954c059a1b}">
+      <Declaration><![CDATA[METHOD Append7 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..7] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+
+Append7 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append8" Id="{d3392a59-5d67-447b-87b7-7441a30a6c20}">
+      <Declaration><![CDATA[METHOD Append8 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+	sourceString8 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..8] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+sources[8] := ADR(sourceString8);
+
+Append8 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append9" Id="{69e07324-e292-4e35-b75f-e817eae7fe3d}">
+      <Declaration><![CDATA[METHOD Append9 : BOOL
+VAR_INPUT
+	destinationString : ANY_STRING;
+	sourceString1 : WSTRING(255);
+	sourceString2 : WSTRING(255);
+	sourceString3 : WSTRING(255);
+	sourceString4 : WSTRING(255);
+	sourceString5 : WSTRING(255);
+	sourceString6 : WSTRING(255);
+	sourceString7 : WSTRING(255);
+	sourceString8 : WSTRING(255);
+	sourceString9 : WSTRING(255);
+END_VAR
+VAR
+	sources : ARRAY [1..9] OF POINTER TO WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sources[1] := ADR(sourceString1);
+sources[2] := ADR(sourceString2);
+sources[3] := ADR(sourceString3);
+sources[4] := ADR(sourceString4);
+sources[5] := ADR(sourceString5);
+sources[6] := ADR(sourceString6);
+sources[7] := ADR(sourceString7);
+sources[8] := ADR(sourceString8);
+sources[9] := ADR(sourceString9);
+
+Append9 := InternalAppend(destinationString, sources);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat10" Id="{89b82cd9-1fd4-40f4-a7bf-209c61b7f6cb}">
+      <Declaration><![CDATA[METHOD Concat10 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+	string8 : WSTRING(255);
+	string9 : WSTRING(255);
+	string10 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat10 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), Tc2_Standard.WCONCAT(string7, string8)) 
+	),
+	Tc2_Standard.WCONCAT(string9, string10));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat11" Id="{a768c2fd-1017-4225-89f8-dbb808006f68}">
+      <Declaration><![CDATA[METHOD Concat11 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+	string8 : WSTRING(255);
+	string9 : WSTRING(255);
+	string10 : WSTRING(255);
+	string11 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat11 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), Tc2_Standard.WCONCAT(string7, string8)) 
+	),
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(string9, string10),
+		string11
+	)
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat12" Id="{356972f6-e7e0-4152-9e97-4a2502151e80}">
+      <Declaration><![CDATA[METHOD Concat12 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+	string8 : WSTRING(255);
+	string9 : WSTRING(255);
+	string10 : WSTRING(255);
+	string11 : WSTRING(255);
+	string12 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat12 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), Tc2_Standard.WCONCAT(string7, string8)) 
+	),
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(string9, string10),
+		Tc2_Standard.WCONCAT(string11, string12)
+	)
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat13" Id="{7fd72f1a-0293-4f99-9eb9-70aa83b15ff3}">
+      <Declaration><![CDATA[METHOD Concat13 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+	string8 : WSTRING(255);
+	string9 : WSTRING(255);
+	string10 : WSTRING(255);
+	string11 : WSTRING(255);
+	string12 : WSTRING(255);
+	string13 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat13 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), Tc2_Standard.WCONCAT(string7, string8)) 
+	),
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string9, string10), Tc2_Standard.WCONCAT(string11, string12)),
+		string13
+	)
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat14" Id="{bb16bd0b-9d43-437e-84b2-c2ebcebe1eb9}">
+      <Declaration><![CDATA[METHOD Concat14 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+	string8 : WSTRING(255);
+	string9 : WSTRING(255);
+	string10 : WSTRING(255);
+	string11 : WSTRING(255);
+	string12 : WSTRING(255);
+	string13 : WSTRING(255);
+	string14 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat14 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), Tc2_Standard.WCONCAT(string7, string8)) 
+	),
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string9, string10), Tc2_Standard.WCONCAT(string11, string12)),
+		Tc2_Standard.WCONCAT(string13, string14)
+	)
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat2" Id="{b8d3f2d7-a38f-491f-9402-790706d9ac79}">
+      <Declaration><![CDATA[METHOD Concat2 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat2 := Tc2_Standard.WCONCAT(string1, string2);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat3" Id="{6cc4b694-bfce-4edf-a6b8-2346ef5e80aa}">
+      <Declaration><![CDATA[METHOD Concat3 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat3 := Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), string3);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat4" Id="{23030920-973f-4f7d-80e9-16dfaa2e863f}">
+      <Declaration><![CDATA[METHOD Concat4 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat4 := Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat5" Id="{9e627e26-0dc8-48d9-b4cc-613b78b1dafc}">
+      <Declaration><![CDATA[METHOD Concat5 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat5 := Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), string5);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat6" Id="{989ef56c-493e-4d5b-beff-878d0e2b2e80}">
+      <Declaration><![CDATA[METHOD Concat6 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat6 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+	Tc2_Standard.WCONCAT(string5, string6)
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat7" Id="{ffebfbe9-4a52-41a4-b954-94152957962e}">
+      <Declaration><![CDATA[METHOD Concat7 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat7 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+	Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), string7)
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat8" Id="{489abba0-c5f9-46ee-82fb-dd6d8898d149}">
+      <Declaration><![CDATA[METHOD Concat8 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+	string8 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat8 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+	Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), Tc2_Standard.WCONCAT(string7, string8)) 
+);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Concat9" Id="{2215b580-dda9-47e9-b0b2-3e2a16a4eaa2}">
+      <Declaration><![CDATA[METHOD Concat9 : WSTRING(255)
+VAR_INPUT
+	string1 : WSTRING(255);
+	string2 : WSTRING(255);
+	string3 : WSTRING(255);
+	string4 : WSTRING(255);
+	string5 : WSTRING(255);
+	string6 : WSTRING(255);
+	string7 : WSTRING(255);
+	string8 : WSTRING(255);
+	string9 : WSTRING(255);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Concat9 := Tc2_Standard.WCONCAT(
+	Tc2_Standard.WCONCAT(
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string1, string2), Tc2_Standard.WCONCAT(string3, string4)), 
+		Tc2_Standard.WCONCAT(Tc2_Standard.WCONCAT(string5, string6), Tc2_Standard.WCONCAT(string7, string8)) 
+	),
+	string9);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="DateAndTimeToString" Id="{2dbf6889-ac63-40bb-b159-7f5bcda0d03e}">
+      <Declaration><![CDATA[METHOD DateAndTimeToString : WSTRING
+VAR_INPUT
+	value : DATE_AND_TIME;
+	dateValuesSeparator : STRING(1) := '_';
+	dateAndTimeSeparator : STRING(1) := '-';
+	timeValuesSeparator : STRING(1) := '_';
+END_VAR
+VAR
+	result : STRING;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[result := TO_STRING(value);
+
+result := Tc2_Standard.DELETE(result, 3, 1);
+
+result := Tc2_Standard.REPLACE(result, dateValuesSeparator, 1, 5);
+result := Tc2_Standard.REPLACE(result, dateValuesSeparator, 1, 8);
+result := Tc2_Standard.REPLACE(result, dateAndTimeSeparator, 1, 11);
+result := Tc2_Standard.REPLACE(result, timeValuesSeparator, 1, 14);
+result := Tc2_Standard.REPLACE(result, timeValuesSeparator, 1, 17);
+
+DateAndTimeToString := TO_WSTRING(result);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InternalAnyToString" Id="{6abee510-4ede-4ea2-b6f7-c6402af23390}" FolderPath="Service members\">
+      <Declaration><![CDATA[METHOD INTERNAL InternalAnyToString : WSTRING(255)
+VAR_INPUT
+	value : __System.AnyType;
+END_VAR
+VAR
+	anyBool : POINTER TO BOOL;
+
+	anyByte : POINTER TO BYTE;
+	anyWord : POINTER TO WORD;
+	anyDWord : POINTER TO LWORD;
+	anyLWord : POINTER TO LWORD;
+	
+	anySInt : POINTER TO SINT;
+	anyInt : POINTER TO INT;
+	anyDInt : POINTER TO DINT;
+	anyLInt : POINTER TO LINT;
+	
+	anyUSInt : POINTER TO USINT;
+	anyUInt : POINTER TO UINT;
+	anyUDInt : POINTER TO UDINT;
+	anyULInt : POINTER TO ULINT;
+	
+	anyReal : POINTER TO REAL;
+	anyLReal : POINTER TO LREAL;
+
+	anyString : POINTER TO STRING(255);
+	anyWString : POINTER TO WSTRING(255);
+	
+	anyTime : POINTER TO TIME;
+	anyLTime : POINTER TO LTIME;
+	anyDate : POINTER TO DATE;
+	anyDateAndTime : POINTER TO DATE_AND_TIME;
+	anyTimeOfDay : POINTER TO TOD;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		anyBool := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyBool^);		
+	
+	__SYSTEM.TYPE_CLASS.TYPE_BIT:
+		anyByte := value.pValue;
+		IF anyByte^ > 0 THEN
+			InternalAnyToString := "1";		
+		ELSE
+			InternalAnyToString := "0";		
+		END_IF
+	
+	__SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		anyByte := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyByte^);		
+	__SYSTEM.TYPE_CLASS.TYPE_WORD:
+		anyWord := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyWord^);
+	__SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		anyDWord := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyDWord^);
+	__SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		anyLWord := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyLWord^);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_SINT:
+		anySInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anySInt^);
+	__SYSTEM.TYPE_CLASS.TYPE_INT:
+		anyInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyInt^);		
+	__SYSTEM.TYPE_CLASS.TYPE_DINT:
+		anyDInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyDInt^);
+	__SYSTEM.TYPE_CLASS.TYPE_LINT:
+		anyLInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyLInt^);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_USINT:
+		anyUSInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyUSInt^);
+	__SYSTEM.TYPE_CLASS.TYPE_UINT:
+		anyUInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyUInt^);		
+	__SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		anyUDInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyUDInt^);
+	__SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		anyULInt := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyULInt^);
+
+	__SYSTEM.TYPE_CLASS.TYPE_REAL:
+		anyReal := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyReal^);
+	__SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		anyLReal := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyLReal^);
+	
+	__SYSTEM.TYPE_CLASS.TYPE_STRING:
+		anyString := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyString^);
+	__SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		anyWString := value.pValue;
+		InternalAnyToString := anyWString^;
+	
+	__SYSTEM.TYPE_CLASS.TYPE_TIME:
+		anyTime := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyTime^);
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		anyLTime := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyLTime^);
+	__SYSTEM.TYPE_CLASS.TYPE_DATE:
+		anyDate := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyDate^);
+	__SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		anyDateAndTime := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyDateAndTime^);  
+	__SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		anyTimeOfDay := value.pValue;
+		InternalAnyToString := TO_WSTRING(anyTimeOfDay^);
+	
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER, __SYSTEM.TYPE_CLASS.TYPE_REFERENCE:
+		InternalAnyToString := TO_WSTRING(Tc2_Utilities.PVOID_TO_HEXSTR(anyDate, 8, FALSE));		
+	
+	(*__SYSTEM.TYPE_CLASS.TYPE_SUBRANGE:
+	__SYSTEM.TYPE_CLASS.TYPE_ENUM:
+	__SYSTEM.TYPE_CLASS.TYPE_ARRAY:
+	__SYSTEM.TYPE_CLASS.TYPE_PARAMS:
+	__SYSTEM.TYPE_CLASS.TYPE_USERDEF:
+	__SYSTEM.TYPE_CLASS.TYPE_NONE:
+	__SYSTEM.TYPE_CLASS.TYPE_ANY:
+	__SYSTEM.TYPE_CLASS.TYPE_ANYBIT:
+	__SYSTEM.TYPE_CLASS.TYPE_ANYDATE:
+	__SYSTEM.TYPE_CLASS.TYPE_ANYINT:
+	__SYSTEM.TYPE_CLASS.TYPE_ANYNUM:
+	__SYSTEM.TYPE_CLASS.TYPE_ANYREAL:
+	__SYSTEM.TYPE_CLASS.TYPE_LAZY:
+	__SYSTEM.TYPE_CLASS.TYPE_BITCONST:*)
+	ELSE
+		IF value.pValue <> 0 THEN
+			InternalAnyToString := TO_WSTRING(value.pValue^); 
+		ELSE
+			InternalAnyToString := "NULL";
+		END_IF
+END_CASE	]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InternalAppend" Id="{993a8ebe-26f7-4860-9a90-ac8cc45da36c}" FolderPath="Service members\">
+      <Declaration><![CDATA[METHOD INTERNAL InternalAppend : BOOL
+VAR_INPUT
+	destinationString : __SYSTEM.AnyType;
+END_VAR
+VAR_IN_OUT
+	sourceStrings : ARRAY [*] OF POINTER TO WSTRING(255);
+END_VAR
+VAR
+	i : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF destinationString.TypeClass <> __SYSTEM.TYPE_CLASS.TYPE_WSTRING THEN
+	RETURN;
+END_IF	
+
+FOR i := LOWER_BOUND(sourceStrings, 1) TO UPPER_BOUND(sourceStrings, 1) DO
+	InternalAppend := Tc2_Utilities.WCONCAT2(destinationString.pValue, sourceStrings[i], destinationString.pValue, TO_UDINT(destinationString.diSize));	
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

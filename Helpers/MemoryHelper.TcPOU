@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MemoryHelper" Id="{0e9f1872-2dbe-40ab-ba89-2ac8a91e9b35}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MemoryHelper]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="SearchByte" Id="{c4d713ff-dee1-4a53-8ef0-3048bab4784e}">
+      <Declaration><![CDATA[METHOD SearchByte : DINT
+VAR_INPUT
+	startAddress : POINTER TO BYTE;
+	startIndex : DINT;
+	totalBytesCount : DINT;
+	searchingByte : BYTE;
+END_VAR
+VAR
+	i : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SearchByte := -1;
+
+FOR i := startIndex TO startIndex + totalBytesCount - 1 DO
+	IF startAddress[i] = searchingByte THEN
+		SearchByte := i;
+		RETURN;
+	END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Swap2Bytes" Id="{69be4707-3823-4030-8fba-0d2fd28820f9}">
+      <Declaration><![CDATA[METHOD Swap2Bytes
+VAR_INPUT
+	data : POINTER TO ARRAY [0..1] OF BYTE;
+END_VAR
+VAR
+	buffer : BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[buffer := data^[0];
+data^[0] := data^[1];
+data^[1] := buffer;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Swap4Bytes" Id="{d3a91c49-b29d-48d9-b7f9-46f8b44a2676}">
+      <Declaration><![CDATA[METHOD Swap4Bytes
+VAR_INPUT
+	data : POINTER TO ARRAY [0..3] OF BYTE;
+END_VAR
+VAR
+	buffer : BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[buffer := data^[0];
+data^[0] := data^[3];
+data^[3] := buffer;
+
+buffer := data^[1];
+data^[1] := data^[2];
+data^[2] := buffer;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Swap8Bytes" Id="{cdc346fb-fa79-4243-9b85-948b7647d967}">
+      <Declaration><![CDATA[METHOD Swap8Bytes
+VAR_INPUT
+	data : POINTER TO ARRAY [0..7] OF BYTE;
+END_VAR
+VAR
+	buffer : BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[buffer := data^[0];
+data^[0] := data^[7];
+data^[7] := buffer;
+
+buffer := data^[1];
+data^[1] := data^[6];
+data^[6] := buffer;
+
+buffer := data^[2];
+data^[2] := data^[5];
+data^[5] := buffer;
+
+buffer := data^[3];
+data^[3] := data^[4];
+data^[4] := buffer;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TrimBytesLeft" Id="{a0f552a0-ca72-476b-9081-92dccb8aa1ef}">
+      <Declaration><![CDATA[METHOD TrimBytesLeft
+VAR_INPUT
+	startAddress : PVOID;
+	trimBytesCount : DINT; 	
+END_VAR
+VAR_IN_OUT
+	totalBytesCount : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF trimBytesCount > 0 AND trimBytesCount <= totalBytesCount THEN
+	TC2_SYSTEM.MEMCPY(startAddress, startAddress + DINT_TO_UDINT(trimBytesCount), DINT_TO_UDINT(totalBytesCount - trimBytesCount));
+	totalBytesCount	:= totalBytesCount - trimBytesCount;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

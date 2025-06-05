@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="WideStringBuilder" Id="{54c1cac9-a7da-4e3e-9066-1e629c322025}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'Direct call is not allowed'} 
+FUNCTION_BLOCK WideStringBuilder EXTENDS Object
+VAR CONSTANT
+	STRING_CHAR_SIZE : BYTE := 2;
+END_VAR
+VAR
+	_ClassName : STRING := __POUNAME();
+
+	_String : POINTER TO WSTRING;
+	_Length : UDINT;
+	_Capacity : UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Service members" Id="{af82416b-7666-469d-a89b-02ca25ddc47b}" />
+    <Method Name="Append" Id="{7d08cd1e-99ce-40c1-8bf9-afefbc61b31c}">
+      <Declaration><![CDATA[METHOD Append : REFERENCE TO WideStringBuilder
+VAR_INPUT
+	value : ANY;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[InternalAppend(value);
+
+Append REF= THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AppendIf" Id="{5ffaca0a-addb-4bc0-b527-1af9c51f06f1}">
+      <Declaration><![CDATA[METHOD AppendIf : REFERENCE TO WideStringBuilder
+VAR_INPUT
+	value : ANY;
+	condition : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF condition THEN
+	InternalAppend(value);
+END_IF
+
+AppendIf REF= THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AppendString" Id="{3b361016-04d2-42e3-ac35-0cb8ff8665d9}">
+      <Declaration><![CDATA[METHOD AppendString : REFERENCE TO WideStringBuilder
+VAR_IN_OUT CONSTANT
+	value : WSTRING;
+END_VAR
+VAR
+	valueDescriptor : __SYSTEM.AnyType;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[valueDescriptor.TypeClass := __SYSTEM.TYPE_CLASS.TYPE_WSTRING;
+valueDescriptor.pValue := ADR(value);
+valueDescriptor.diSize := 2 * TO_DINT(Tc2_Utilities.WLEN2(ADR(value))) + 2;
+
+InternalAppend(valueDescriptor);
+
+AppendString REF= THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AppendStringIf" Id="{168240bf-1e82-4b1f-9dfd-0c48524ef4d6}">
+      <Declaration><![CDATA[METHOD AppendStringIf : REFERENCE TO WideStringBuilder
+VAR_IN_OUT CONSTANT
+	value : WSTRING;
+END_VAR
+VAR_INPUT
+	condition : BOOL;
+END_VAR
+VAR
+	valueDescriptor : __SYSTEM.AnyType;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF condition THEN
+	valueDescriptor.TypeClass := __SYSTEM.TYPE_CLASS.TYPE_WSTRING;
+	valueDescriptor.pValue := ADR(value);
+	valueDescriptor.diSize := 2 * TO_DINT(Tc2_Utilities.WLEN2(ADR(value))) + 2;
+	
+	InternalAppend(valueDescriptor);
+END_IF
+
+AppendStringIf REF= THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AssignToString" Id="{ad31b933-c2a3-4358-a882-017c3b2c5b07}">
+      <Declaration><![CDATA[METHOD AssignToString : BOOL
+VAR_INPUT
+	targetString : ANY_STRING;
+END_VAR
+VAR
+	//exceptionFactory : ExceptionFactory(__POUNAME(), ClassName, CurrentNamespace.Name);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF targetString.TypeClass <> __SYSTEM.TYPE_CLASS.TYPE_WSTRING THEN
+	//exceptionFactory.ThrowException(__POSITION(), "Invalid string type, should be WSTRING");
+END_IF
+
+IF targetString.diSize < TO_DINT(_Length + STRING_CHAR_SIZE) THEN
+	//exceptionFactory.ThrowException(__POSITION(), WStringHelper.Concat5("Target string size is ", TO_WSTRING(targetString.diSize), " bytes, but built string is ", TO_WSTRING(_Length + STRING_CHAR_SIZE), " bytes"));
+END_IF
+
+AssignToString := Tc2_Utilities.WSTRNCPY(targetString.pValue, _String, TO_UDINT(targetString.diSize));]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Capacity" Id="{daddc751-9e90-4188-a4a8-e81a2557708c}">
+      <Declaration><![CDATA[PROPERTY Capacity : UDINT]]></Declaration>
+      <Get Name="Get" Id="{5edccf13-57a6-4b5f-9e3e-4bed97faaa2d}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Capacity := _Capacity;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ClassName" Id="{71aa0790-c1b7-4f63-8a1d-57cdd319793e}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING
+]]></Declaration>
+      <Get Name="Get" Id="{ccd5be9f-75d6-41d2-96b9-a345afcf3882}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{69230318-6c24-4500-a76b-aeeb5b9508a2}">
+      <Declaration><![CDATA[METHOD Clear : REFERENCE TO WideStringBuilder
+VAR_INPUT
+	releaseMemory : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_Length := 0;
+
+IF _Capacity > 0 THEN
+	IF releaseMemory THEN
+		__DELETE(_String);	
+		_Capacity := 0;	
+	ELSE
+		Tc2_System.MEMSET(_String, 0, StringMaxSize);
+	END_IF	
+END_IF
+
+Clear REF= THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ClearIf" Id="{b09b78cf-fdcb-472e-8f1d-d995bd8749f8}">
+      <Declaration><![CDATA[METHOD ClearIf : REFERENCE TO WideStringBuilder
+VAR_INPUT
+	condition : BOOL;
+	releaseMemory : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF condition THEN
+	Clear(releaseMemory);
+END_IF
+
+ClearIf REF= THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{17c895df-e8b2-4b5e-8758-344cfc75ae4f}">
+      <Declaration><![CDATA[METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear(TRUE);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="InternalAppend" Id="{a0cfbc30-ee53-403a-9b94-5bfe9e8cdc3b}" FolderPath="Service members\">
+      <Declaration><![CDATA[METHOD PROTECTED InternalAppend 
+VAR_INPUT
+	value : REFERENCE TO __System.AnyType;
+END_VAR
+VAR
+	stringToAppend : WSTRING(255);	
+	stringToAppendLength : UDINT;
+	newString : POINTER TO BYTE;
+	newCapacity : UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stringToAppend := WideStringHelper.InternalAnyToString(value);
+
+stringToAppendLength := TO_UDINT(Tc2_Standard.WLEN(stringToAppend));
+
+IF _Capacity = 0 OR_ELSE _Length + stringToAppendLength > _Capacity THEN
+	IF _Length + stringToAppendLength - _Capacity > 80 THEN
+		newCapacity := _Length + stringToAppendLength;
+	ELSE
+		newCapacity := _Length + 80;
+	END_IF
+	
+	newString := __NEW(BYTE, (STRING_CHAR_SIZE + (newCapacity * STRING_CHAR_SIZE)));
+	
+	IF _String <> 0 THEN
+		Tc2_Utilities.WSTRNCPY(newString, _String, STRING_CHAR_SIZE + (newCapacity * STRING_CHAR_SIZE));
+		
+		__DELETE(_String);
+	END_IF
+	
+	_String := newString;
+	_Capacity := newCapacity;
+END_IF
+
+Tc2_Utilities.WCONCAT2(_String, ADR(stringToAppend), _String, StringMaxSize);
+_Length := _Length + stringToAppendLength;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="StringAddress" Id="{647c2cd3-8936-41c7-8f8b-b506c1168334}">
+      <Declaration><![CDATA[PROPERTY StringAddress : POINTER TO WSTRING]]></Declaration>
+      <Get Name="Get" Id="{ff809ff9-52cd-4744-b730-ececf6ca0362}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[StringAddress := _String;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="StringLength" Id="{ac0b2dae-c9e8-4065-9345-58449098c717}">
+      <Declaration><![CDATA[PROPERTY StringLength : UDINT]]></Declaration>
+      <Get Name="Get" Id="{27fabfaf-9b30-4e88-8a5c-3f55386b4224}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[StringLength := _Length;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="StringMaxSize" Id="{674ed0a6-f20c-4ad0-afbd-c18a2da37366}">
+      <Declaration><![CDATA[PROPERTY StringMaxSize : UDINT]]></Declaration>
+      <Get Name="Get" Id="{3d69bb90-a77e-4fc9-87a6-3bf8649a1719}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[StringMaxSize := STRING_CHAR_SIZE + (STRING_CHAR_SIZE * _Capacity);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="StringRealSize" Id="{8d207002-b75d-434e-963c-d3fae3948d73}">
+      <Declaration><![CDATA[PROPERTY StringRealSize : UDINT]]></Declaration>
+      <Get Name="Get" Id="{974fc4b9-7426-42c4-a8e0-dff9829979bf}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[StringRealSize := STRING_CHAR_SIZE + (STRING_CHAR_SIZE * _Length);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="ToString255" Id="{b7218468-badd-420f-9313-67c15b612592}">
+      <Declaration><![CDATA[METHOD ToString255 : WSTRING(255)]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _Length > 0 THEN
+	Tc2_Utilities.WSTRNCPY(ADR(ToString255), _String, SIZEOF(ToString255));
+END_IF ]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

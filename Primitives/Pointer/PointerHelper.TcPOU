@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="PointerHelper" Id="{2efa693b-8ff2-4e0a-a84b-e316607e414f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PointerHelper]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="ReleaseDynamicMemory" Id="{27594c08-0453-4d52-a64e-971260c6e1aa}">
+      <Declaration><![CDATA[METHOD ReleaseDynamicMemory
+VAR_INPUT
+	value : POINTER TO BYTE;
+	pointerType : POINTER_TYPE;
+END_VAR
+VAR
+	objectPointer : POINTER TO Object;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF value = 0 THEN
+	RETURN;
+END_IF
+
+IF pointerType = POINTER_TYPE.OBJECT_POINTER THEN
+	objectPointer := value;
+	// to call FB_exit
+	__DELETE(objectPointer);
+ELSE
+	__DELETE(value);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="ICloneable" Id="{0a9e2f54-7617-4a5d-8fc2-962082da80fb}">
+    <Declaration><![CDATA[INTERFACE ICloneable EXTENDS __System.IQueryInterface
+]]></Declaration>
+    <Method Name="Clone" Id="{211c847f-0aa0-451e-bc77-9b18b7b131b9}">
+      <Declaration><![CDATA[METHOD Clone : IObject]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

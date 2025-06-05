@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="IComparer" Id="{7919720f-caf3-4677-a334-b5cdfe2e8ce5}">
+    <Declaration><![CDATA[INTERFACE IComparer EXTENDS IObject
+]]></Declaration>
+    <Method Name="Compare" Id="{f02f14c8-397d-4c0e-8ffe-4461d30242ba}">
+      <Declaration><![CDATA[METHOD Compare : COMPARISION_RESULT
+VAR_INPUT
+	left : PVOID;
+	right : PVOID;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

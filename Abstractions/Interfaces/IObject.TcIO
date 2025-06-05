@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="IObject" Id="{49cb1f01-dee8-4029-83e5-00cc2e246691}">
+    <Declaration><![CDATA[INTERFACE IObject EXTENDS __System.IQueryInterface, IDisposable]]></Declaration>
+    <Property Name="ClassName" Id="{16e5ef4d-9fb8-4cc3-be2e-3c2a59615c33}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{1bf70d89-980c-482c-b6f9-e74e6c9392b4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Equals" Id="{eacac27e-f264-4c82-bff8-8bf5a5c4ed11}">
+      <Declaration><![CDATA[{attribute "object_name" := "Equals"}
+METHOD Equals : BOOL
+VAR_INPUT 
+	object : IObject;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

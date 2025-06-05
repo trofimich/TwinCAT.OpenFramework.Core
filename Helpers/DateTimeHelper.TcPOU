@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="DateTimeHelper" Id="{124f8199-db51-4760-a104-75d67f9b5386}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+PROGRAM DateTimeHelper
+VAR_OUTPUT
+	{attribute 'OPC.UA.DA.Access' := '1'}
+	MinDateTime : DATE_AND_TIME := DT#1970-01-01-00:00;
+	
+	{attribute 'OPC.UA.DA.Access' := '1'}
+	SystemTimeZoneId : Tc2_Utilities.E_TimeZoneID;
+	{attribute 'OPC.UA.DA.Access' := '1'}
+	SystemTimeZoneInformation : Tc2_Utilities.ST_TimeZoneInformation;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemTimeZoneValid : BOOL;
+	
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemLocalDateTime : DATE_AND_TIME;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemLocalDate : DATE;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemLocalTime : TIME;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemLocalTimeOfDay : TIME_OF_DAY;
+	
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemUtcDateTime : DATE_AND_TIME;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemUtcDate : DATE;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemUtcTime : TIME;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemUtcTimeOfDay : TIME_OF_DAY;
+
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemFileTime : Tc2_Utilities.T_FILETIME;
+	{attribute 'OPC.UA.DA.Access' := '1'}	
+	SystemFileTime64 : Tc2_Utilities.T_FILETIME64;
+END_VAR
+VAR
+	{attribute 'OPC.UA.DA' := '0'}
+	_LocalSystemTime : Tc2_Utilities.FB_LocalSystemTime; 
+	{attribute 'OPC.UA.DA' := '0'}
+	_GetTimeZone : Tc2_Utilities.FB_GetTimeZoneInformation;
+	{attribute 'OPC.UA.DA' := '0'}	
+	_LocalTimeToUtcTime : FB_TzSpecificLocalTimeToSystemTime;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Execute" Id="{1678ed7e-f8ed-4120-88c8-16ecb39710cf}">
+      <Declaration><![CDATA[METHOD Execute : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF SystemTimeZoneId = Tc2_Utilities.E_TimeZoneID.eTimeZoneID_Unknown OR_ELSE SystemTimeZoneId = Tc2_Utilities.E_TimeZoneID.eTimeZoneID_Invalid THEN
+	_GetTimeZone(bExecute := TRUE, tTimeout := T#1S);
+	
+	IF _GetTimeZone.bError THEN
+		_GetTimeZone(bExecute := FALSE);
+		_GetTimeZone(bExecute := TRUE);
+	ELSE
+		SystemTimeZoneId := _GetTimeZone.tzID;
+		SystemTimeZoneInformation := _GetTimeZone.tzInfo;
+		SystemTimeZoneValid := TRUE; 
+	END_IF
+END_IF
+
+_LocalSystemTime(bEnable := TRUE);
+
+IF SystemTimeZoneValid THEN	
+	SystemLocalDateTime := Tc2_Utilities.SYSTEMTIME_TO_DT(_LocalSystemTime.systemTime);
+	SystemLocalDate := DT_TO_DATE(SystemLocalDateTime);
+	SystemLocalTime := TO_TIME(StringHelper.Concat9('T#', TO_STRING(_LocalSystemTime.systemTime.wHour), 'h', TO_STRING(_LocalSystemTime.systemTime.wMinute), 'm', TO_STRING(_LocalSystemTime.systemTime.wSecond), 's', TO_STRING(_LocalSystemTime.systemTime.wMilliseconds), 'ms'));	
+	SystemLocalTimeOfDay := TO_TOD(StringHelper.Concat8('TOD#', TO_STRING(_LocalSystemTime.systemTime.wHour), ':', TO_STRING(_LocalSystemTime.systemTime.wMinute), ':', TO_STRING(_LocalSystemTime.systemTime.wSecond), '.', TO_STRING(_LocalSystemTime.systemTime.wMilliseconds)));	
+
+	_LocalTimeToUtcTime(in := _LocalSystemTime.systemTime, tzInfo := _GetTimeZone.tzInfo);	
+
+	SystemUtcDateTime := Tc2_Utilities.SYSTEMTIME_TO_DT(_LocalTimeToUtcTime.out);
+	SystemUtcDate := DT_TO_DATE(SystemUtcDateTime);
+	SystemUtcTime := TO_TIME(StringHelper.Concat9('T#', TO_STRING(_LocalTimeToUtcTime.out.wHour), 'h', TO_STRING(_LocalTimeToUtcTime.out.wMinute), 'm', TO_STRING(_LocalTimeToUtcTime.out.wSecond), 's', TO_STRING(_LocalTimeToUtcTime.out.wMilliseconds), 'ms'));	
+	SystemUtcTimeOfDay := TO_TOD(StringHelper.Concat8('TOD#', TO_STRING(_LocalTimeToUtcTime.out.wHour), ':', TO_STRING(_LocalTimeToUtcTime.out.wMinute), ':', TO_STRING(_LocalTimeToUtcTime.out.wSecond), '.', TO_STRING(_LocalTimeToUtcTime.out.wMilliseconds)));	
+
+	SystemFileTime := Tc2_Utilities.SYSTEMTIME_TO_FILETIME(_LocalSystemTime.systemTime);
+	SystemFileTime64 := Tc2_Utilities.SYSTEMTIME_TO_FILETIME64(_LocalSystemTime.systemTime);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="SystemTime" Id="{3367634a-f32e-4334-9794-2a18eb6616e7}">
+      <Declaration><![CDATA[PROPERTY SystemTime : TIMESTRUCT]]></Declaration>
+      <Get Name="Get" Id="{f23e60d1-4130-4967-bf05-24faf2dc1b27}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SystemTime := _LocalSystemTime.systemTime;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="SystemTimeSynchronisationInterval" Id="{61dc04db-fade-48d0-a80a-79271322ab6c}">
+      <Declaration><![CDATA[{attribute 'OPC.UA.DA.Property' := '1'}
+{attribute 'monitoring' := 'call'}
+PROPERTY SystemTimeSynchronisationInterval : DWORD]]></Declaration>
+      <Get Name="Get" Id="{6cf4cd98-1a82-44f6-afec-6247f2c7a3d7}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SystemTimeSynchronisationInterval := _LocalSystemTime.dwCycle;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{321bb97c-2bdc-4c65-b8eb-d119f3204d9f}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_LocalSystemTime.dwCycle := SystemTimeSynchronisationInterval;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SystemTimeValid" Id="{7cdc9887-ca1c-40bc-84e2-d4d8baa2b9d5}">
+      <Declaration><![CDATA[PROPERTY SystemTimeValid : BOOL]]></Declaration>
+      <Get Name="Get" Id="{63e805ae-8942-4dc8-9ac6-699a2a0d7d14}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SystemTimeValid := SystemTimeZoneValid AND_THEN _LocalSystemTime.bValid;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

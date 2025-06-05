@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="Timer" Id="{03b7d8d8-e416-4a83-8cfd-d9bb2443cc86}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+// The wrapper around Tc2_Standard.TON
+FUNCTION_BLOCK FINAL Timer EXTENDS Object IMPLEMENTS IAction
+VAR
+	{attribute 'OPC.UA.DA' := '0'}
+	_ClassName : STRING := __POUNAME();
+
+	{attribute 'OPC.UA.DA' := '0'}
+	_Timer : Tc2_Standard.TON;
+	
+	{attribute 'OPC.UA.DA' := '0'}
+	_PrevTimerQ : BOOL;
+	{attribute 'OPC.UA.DA' := '0'}
+	_Error : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Busy" Id="{d3522f3d-2f07-419a-93fe-776db2de33ed}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'OPC.UA.DA.Property' := '1'}
+{attribute 'OPC.UA.DA.Access' := '1'}
+PROPERTY Busy : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{124c3ed1-7d1c-4941-9d73-ac425369796c}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Busy := _Timer.IN AND_THEN NOT _Timer.Q;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ClassName" Id="{2caddffd-e6f8-465a-abd6-4ede792ebcd7}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{41f98202-9637-417b-9643-bfc75a57fae4}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Done" Id="{9b04dcaf-4de8-40a4-ae8b-8a6e74e36676}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'OPC.UA.DA.Property' := '1'}
+{attribute 'OPC.UA.DA.Access' := '1'}
+// Timer elapsed
+PROPERTY Done : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{9346a461-ea85-4654-9566-23a3d44e94bb}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Done := _Timer.Q;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ElapsedTime" Id="{2fa19b85-62a3-4439-b952-808ac9688887}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'OPC.UA.DA.Property' := '1'}
+{attribute 'OPC.UA.DA.Access' := '1'}
+PROPERTY ElapsedTime : TIME]]></Declaration>
+      <Get Name="Get" Id="{d86d21ac-aacd-4fbe-8edf-459ed761f7eb}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ElapsedTime := _Timer.ET;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Error" Id="{d274ee21-b3f2-43dc-9981-2166c2c0713c}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'OPC.UA.DA.Property' := '1'}
+{attribute 'OPC.UA.DA.Access' := '1'}
+PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{74fae768-fa7d-45c9-b8d6-db5cd4dd43a0}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Error := _Error;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Execute" Id="{675702e9-f12c-4260-88e8-439a14023688}">
+      <Declaration><![CDATA[METHOD Execute]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_PrevTimerQ := _Timer.Q;
+
+_Timer();]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Interval" Id="{859f432b-a069-45e7-a297-10b745b0ebd3}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'OPC.UA.DA.Property' := '1'}
+{attribute 'OPC.UA.DA.Access' := '1'}
+PROPERTY Interval : TIME]]></Declaration>
+      <Get Name="Get" Id="{9d3dbfed-853c-48e4-8950-d98e2d51ece0}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Interval := _Timer.PT;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{3d7856fa-bdde-4f4d-812e-3b8ef30bd8d1}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Timer.PT := Interval;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Start" Id="{47b41417-6ead-41ec-9e76-1c0aa5e80ddd}">
+      <Declaration><![CDATA[// Restart timer if already started
+METHOD Start
+VAR
+	//exceptionFactory : ExceptionFactory(__POUNAME(), ClassName, CurrentNamespace.Name);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _Timer.PT > T#0S THEN
+	_Error := FALSE;
+	
+	IF _Timer.IN THEN
+		_Timer(IN := FALSE);
+	END_IF
+	
+	_Timer(IN := TRUE);
+ELSE
+	//exceptionFactory.ThrowException(__POSITION(), "Timer interval is not specified");
+	
+	_Error := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Started" Id="{31fc0c35-a8af-4474-b114-eaa8febb82a7}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+{attribute 'OPC.UA.DA.Property' := '1'}
+{attribute 'OPC.UA.DA.Access' := '1'}
+PROPERTY Started : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{5cdc78c4-3d27-458b-8bf7-cf24e5c9e802}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Started := _Timer.IN;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Stop" Id="{951a1ac1-5ce3-46bf-acef-296a5cced5ae}">
+      <Declaration><![CDATA[METHOD Stop]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_Timer(IN := FALSE);
+_Error := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Triggered" Id="{44152ba8-bc0f-4381-a56a-2255e1f7c08b}">
+      <Declaration><![CDATA[// True if timer just elapsed
+PROPERTY Triggered : BOOL]]></Declaration>
+      <Get Name="Get" Id="{a57633ce-e98d-40ad-aa3c-88cae51f006e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Triggered := NOT _PrevTimerQ AND_THEN _Timer.Q;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

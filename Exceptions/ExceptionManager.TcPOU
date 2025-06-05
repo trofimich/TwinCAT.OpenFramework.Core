@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="ExceptionManager" Id="{722e8a75-a8dc-4f6d-84e9-83f307045e70}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+PROGRAM ExceptionManager
+VAR
+	_Exception : POINTER TO Exception;
+	_EmptyException : EmptyException;
+	_SystemException : SystemException;	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cleanup" Id="{f9d00147-ef5a-438a-91f3-6814363f412d}">
+      <Declaration><![CDATA[METHOD Cleanup]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _Exception <> 0 THEN
+	__DELETE(_Exception);		
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetLastException" Id="{434a5e87-4296-4bc5-a3c7-e1fd25672e22}">
+      <Declaration><![CDATA[// Result is always not null. Returns EmptyException instance by default
+METHOD GetLastException : IException
+VAR_IN_OUT CONSTANT 
+	exceptionCode : __SYSTEM.ExceptionCode;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF exceptionCode = __SYSTEM.ExceptionCode.RTSEXCPT_DIVIDEBYZERO AND_THEN _Exception <> 0 THEN
+	GetLastException := _Exception^;
+ELSE
+	_SystemException.SetExceptionCode(exceptionCode);
+	GetLastException := _SystemException;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Throw" Id="{749562e1-1a92-4b62-b485-e35611af487a}">
+      <Declaration><![CDATA[METHOD Throw
+VAR_INPUT
+	exception : IException;
+END_VAR
+VAR
+	fakeVariable : INT := 0;
+	exceptionCloneInterface : IObject;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF _Exception <> 0 THEN
+	__DELETE(_Exception);
+END_IF
+
+__QUERYPOINTER(exception.Clone(), _Exception);
+
+// fake devision by zero
+fakeVariable := fakeVariable / fakeVariable;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

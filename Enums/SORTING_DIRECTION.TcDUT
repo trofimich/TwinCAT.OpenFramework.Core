@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="SORTING_DIRECTION" Id="{ed5be797-a04f-4190-ad7a-af1bfa7ab37d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE SORTING_DIRECTION :
+(
+	ASCENDING,
+	DESCENDING
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

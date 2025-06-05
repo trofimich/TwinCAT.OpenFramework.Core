@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AnyTypeHelper" Id="{30a9a158-f31f-4666-9b77-4b974af8545f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM AnyTypeHelper]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetAnyDescriptorByVariable" Id="{1d943783-b113-4944-ae42-a6c966c7d38f}">
+      <Declaration><![CDATA[METHOD GetAnyDescriptorByVariable : __SYSTEM.AnyType
+VAR_INPUT
+	variable : ANY;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetAnyDescriptorByVariable := variable;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

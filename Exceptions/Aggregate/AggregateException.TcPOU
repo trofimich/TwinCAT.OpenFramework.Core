@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AggregateException" Id="{9cf4d791-6889-4de2-9437-1dd0485d44f7}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'enable_dynamic_creation'}	
+{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+FUNCTION_BLOCK AggregateException EXTENDS Exception
+VAR
+	_ClassName : STRING := __POUNAME();
+	_InnerExceptions : POINTER TO IException;
+	_InnerExceptionCount : UINT;
+END_VAR
+VAR CONSTANT
+	EXCEPTION_NUMBER_DELIMITER : WSTRING(1) := ".";
+	AGGREGATE_EXCEPTION_SUFFIX : WSTRING(25) := " aggregated exceptions";
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="AddInnerException" Id="{4c46343d-9682-4392-9e7d-fe16ec2175a9}">
+      <Declaration><![CDATA[METHOD AddInnerException
+VAR_IN_OUT CONSTANT
+	innerException : IException; // will be cloned
+END_VAR
+VAR
+	innerExceptionClone : IException;
+	newInnerExceptions : POINTER TO IException;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[__QUERYINTERFACE(innerException.Clone(), innerExceptionClone); 
+
+newInnerExceptions := __NEW(POINTER TO IException, (_InnerExceptionCount + 1));
+	
+Tc2_System.MEMCPY(newInnerExceptions, _InnerExceptions, TO_UDINT(SIZEOF(POINTER TO IException) * _InnerExceptionCount));
+
+newInnerExceptions[_InnerExceptionCount] := innerExceptionClone; 
+
+_InnerExceptionCount := _InnerExceptionCount + 1;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ClassName" Id="{420884f7-081d-42f5-ac3b-ebd831569025}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{afff3fe7-9f41-46bb-b38b-dcd93dd10c0a}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clone" Id="{8dc13b08-3f78-413a-a9e1-2abe840f8950}">
+      <Declaration><![CDATA[METHOD Clone : IObject
+VAR
+	exceptionClone : POINTER TO AggregateException;
+	i : DINT;
+	innerException : POINTER TO Exception;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[exceptionClone := __NEW(AggregateException);
+
+exceptionClone^.Fatal := Fatal;
+exceptionClone^.SourceNamespaceName := SourceNamespaceName;
+exceptionClone^.SourceClassName := SourceClassName;
+exceptionClone^.SourceMethodName := SourceMethodName;
+exceptionClone^.SourcePosition := SourcePosition;
+exceptionClone^.LocalTimestamp := LocalTimestamp;	
+exceptionClone^.UtcTimestamp := UtcTimestamp;	
+
+FOR i := 0 TO _InnerExceptionCount - 1 DO
+	exceptionClone^.AddInnerException(_InnerExceptions[i]);
+END_FOR
+
+Clone := exceptionClone^;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Empty" Id="{04d77155-d54b-4109-9d18-088b34b9a185}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{b22ba616-5c77-41b5-b501-3e7891ccbd1e}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Empty := _InnerExceptionCount = 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="FB_exit" Id="{4b9a7e79-01a6-429f-a5e5-1ba8c2234507}">
+      <Declaration><![CDATA[METHOD FB_exit : BOOL
+VAR_INPUT
+	(* if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).*)
+	bInCopyCode	: BOOL;
+END_VAR
+VAR
+	i : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO _InnerExceptionCount - 1 DO
+	_InnerExceptions[i].Dispose();
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetMessage" Id="{15f07a9c-742f-4689-bd2b-1c3f76323a0e}">
+      <Declaration><![CDATA[METHOD GetMessage : ERROR_MESSAGE
+VAR_INPUT
+	showTimestamp : BOOL := FALSE;
+	showSource : BOOL := FALSE;
+END_VAR
+VAR
+	stringBuilder : WideStringBuilder;
+	
+	i : DINT;
+	innerExceptionMessage : ERROR_MESSAGE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stringBuilder
+	.Append(_InnerExceptionCount)
+	.AppendString(AGGREGATE_EXCEPTION_SUFFIX);
+
+IF showTimestamp THEN
+	stringBuilder.AppendString(TIME_PREFIX);
+	AppendTimestampDescription(stringBuilder);
+END_IF
+
+IF showSource THEN
+	stringBuilder.AppendString(SOURCE_PREFIX);
+	AppendSourceDescription(stringBuilder);
+END_IF
+
+FOR i := 0 TO _InnerExceptionCount - 1 DO
+	innerExceptionMessage := _InnerExceptions[i].GetMessage(showTimestamp, showSource);
+	
+	stringBuilder
+		.AppendString(WideStringHelper.NewLine)
+		.Append(i)
+		.AppendString(EXCEPTION_NUMBER_DELIMITER)	
+		.Append(innerExceptionMessage);
+END_FOR		
+
+stringBuilder.AssignToString(GetMessage);]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="InnerExceptionCount" Id="{11453593-53f7-464f-b013-412ea994247b}">
+      <Declaration><![CDATA[PROPERTY InnerExceptionCount : UINT]]></Declaration>
+      <Get Name="Get" Id="{9a87a035-0e8c-46c5-a992-0c7b3b7f4fc7}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[InnerExceptionCount := _InnerExceptionCount;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="InnerExceptions" Id="{43b1e823-baaf-48c4-9e05-349197b0c04f}">
+      <Declaration><![CDATA[PROPERTY InnerExceptions : POINTER TO IException]]></Declaration>
+      <Get Name="Get" Id="{6585ba90-b5eb-48f5-a002-55565b5d076c}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[InnerExceptions := _InnerExceptions;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Throw" Id="{7442c6d8-b307-40ed-94ac-370542c607f1}">
+      <Declaration><![CDATA[METHOD Throw
+VAR_INPUT
+	sourceNamespaceName : STRING;
+	sourceClassName : STRING;
+	sourceMethodName : STRING;
+	sourcePosition : STRING;
+END_VAR
+VAR
+	i : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.SourceNamespaceName := sourceNamespaceName;	
+THIS^.SourceClassName := sourceClassName;
+THIS^.SourceMethodName := SEL(Tc2_Standard.FIND(sourceMethodName, sourceClassName) <> 1, Tc2_Standard.DELETE(sourceMethodName, Tc2_Standard.LEN(sourceClassName) + 1, 1), sourceMethodName); 
+THIS^.SourcePosition := sourcePosition;
+THIS^.Fatal := FALSE;
+THIS^.LocalTimestamp := DateTimeHelper.SystemLocalDateTime;
+THIS^.UtcTimestamp := DateTimeHelper.SystemUtcDateTime;
+
+FOR i := 0 TO _InnerExceptionCount - 1 DO
+	IF _InnerExceptions[i].Fatal THEN
+		THIS^.Fatal := TRUE;
+		EXIT;
+	END_IF
+END_FOR
+
+ExceptionManager.Throw(THIS^);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

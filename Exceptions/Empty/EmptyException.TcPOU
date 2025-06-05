@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="EmptyException" Id="{301384fd-c915-4720-bfde-f90d2dca7ba2}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'enable_dynamic_creation'}	
+{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+FUNCTION_BLOCK EmptyException EXTENDS Exception
+VAR
+	_ClassName : STRING := __POUNAME();
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ClassName" Id="{93378995-609b-4770-9943-b61b37cce5dc}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{fb4c03aa-4f57-416b-9108-8190d221402d}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clone" Id="{0d6feffe-1bce-43f3-82f4-b46d05cd59ad}">
+      <Declaration><![CDATA[METHOD Clone : IObject
+VAR
+	exceptionClone : POINTER TO EmptyException;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[exceptionClone := __NEW(EmptyException);
+
+Clone := exceptionClone^;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Empty" Id="{3252003c-e082-4928-b9ff-3c898a649839}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{cbba38a8-2d90-487c-9c38-f866c56d3d30}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Empty := TRUE;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="GetMessage" Id="{33c18aa6-310f-4a0b-a896-a83149c61777}">
+      <Declaration><![CDATA[METHOD GetMessage : ERROR_MESSAGE
+VAR_INPUT
+	showTimestamp : BOOL := FALSE;
+	showSource : BOOL := FALSE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetMessage := "";]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

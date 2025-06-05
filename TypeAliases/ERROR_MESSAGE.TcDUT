@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ERROR_MESSAGE" Id="{8739ee3e-8f85-4784-a1cf-58d690d8f414}">
+    <Declaration><![CDATA[TYPE ERROR_MESSAGE : WSTRING(2000); END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="BitHelper" Id="{55739d8e-6955-444f-85cc-d94aa00d480b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM BitHelper]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetBitsFromByte" Id="{360e0f1a-3625-47bb-b5ad-4cb87a51944e}">
+      <Declaration><![CDATA[METHOD GetBitsFromByte : BYTE
+VAR_INPUT
+	OriginalByte : BYTE;
+	FirstBitIndex : BYTE;
+	LastBitIndex : BYTE;
+END_VAR
+VAR
+	SHLBits: BYTE;
+	SHRBits: BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FirstBitIndex >= 7 OR LastBitIndex >= 7 THEN
+	GetBitsFromByte := 0;
+	RETURN;
+END_IF;
+
+SHLBits:= 7- LastBitIndex;
+SHRBits:= FirstBitIndex + LastBitIndex;
+
+IF SHLBits > 0 THEN
+	GetBitsFromByte := SHL(OriginalByte, SHLBits);
+END_IF;
+
+IF SHRBits > 0 THEN
+	GetBitsFromByte := SHR(OriginalByte, SHRBits);
+END_IF;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetBitsFromDWord" Id="{de345c3e-f18e-4582-bad6-a89ffdaf022f}">
+      <Declaration><![CDATA[METHOD GetBitsFromDWord : DWORD
+VAR_INPUT
+	OriginalDword : DWORD;
+	FirstBitIndex : BYTE;
+	LastBitIndex : BYTE;
+END_VAR
+VAR
+	SHLBits: BYTE;
+	SHRBits: BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FirstBitIndex >= 31 OR LastBitIndex >= 31 THEN
+	GetBitsFromDWord := 0;
+	RETURN;
+END_IF;
+
+SHLBits:= 31 - LastBitIndex;
+SHRBits:= FirstBitIndex + LastBitIndex;
+
+IF SHLBits > 0 THEN
+	GetBitsFromDWord := SHL(OriginalDword, SHLBits);
+END_IF;
+
+IF SHRBits > 0 THEN
+	GetBitsFromDWord := SHR(OriginalDword, SHRBits);
+END_IF;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetBitsFromLReal" Id="{75fe1c18-f950-4a89-bd4c-d88fe92708a1}">
+      <Declaration><![CDATA[METHOD GetBitsFromLReal : LREAL
+VAR_INPUT
+	OriginalLreal : LREAL;
+	FirstBitIndex : BYTE;
+	LastBitIndex : BYTE;
+END_VAR
+VAR
+	SHLBits: BYTE;
+	SHRBits: BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FirstBitIndex >= 63 OR LastBitIndex >= 63 THEN
+	GetBitsFromLReal := 0;
+	RETURN;
+END_IF;
+
+SHLBits := 63 - LastBitIndex;
+SHRBits := FirstBitIndex + LastBitIndex;
+
+IF SHLBits > 0 THEN
+	GetBitsFromLReal := SHL(LREAL_TO_DWORD(OriginalLreal), SHLBits);
+END_IF;
+
+IF SHRBits > 0 THEN
+	GetBitsFromLReal := SHR(LREAL_TO_DWORD(OriginalLreal), SHRBits);
+END_IF;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetBitsFromWord" Id="{f6d5bd8e-a38a-4f04-b387-0e37751a4512}">
+      <Declaration><![CDATA[METHOD GetBitsFromWord : WORD
+VAR_INPUT
+	OriginalWord : WORD;
+	FirstBitIndex : BYTE;
+	Count : BYTE;
+END_VAR
+VAR
+	SHLBits: BYTE;
+	SHRBits: BYTE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF FirstBitIndex >= 15 OR Count > 16 THEN
+	GetBitsFromWord := 0;
+	RETURN;
+END_IF;
+
+SHLBits:= 16 - FirstBitIndex- Count;
+SHRBits:= SHLBits +FirstBitIndex ;
+GetBitsFromWord := OriginalWord;
+
+IF SHLBits > 0 THEN
+	GetBitsFromWord := SHL(GetBitsFromWord, SHLBits);
+END_IF;
+
+IF SHRBits > 0 THEN
+	GetBitsFromWord := SHR(GetBitsFromWord, SHRBits);
+END_IF;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

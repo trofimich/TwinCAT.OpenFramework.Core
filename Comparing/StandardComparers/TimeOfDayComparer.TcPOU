@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="TimeOfDayComparer" Id="{ea065f30-ce64-4029-944f-852eca6f3a7d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TimeOfDayComparer EXTENDS Object IMPLEMENTS IComparer
+VAR
+	_ClassName : STRING := __POUNAME();
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="ClassName" Id="{ac8544c7-6138-4482-89da-ea6129e09915}">
+      <Declaration><![CDATA[{attribute 'monitoring' := 'call'}
+PROPERTY ClassName : STRING]]></Declaration>
+      <Get Name="Get" Id="{c106ce0c-ebf9-49b8-bd12-a73358cd0ba5}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ClassName := _ClassName;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Compare" Id="{8e2d2050-17cd-433e-91e7-4c08b6dfd298}">
+      <Declaration><![CDATA[{attribute "object_name" := "Compare"}
+METHOD Compare : COMPARISION_RESULT
+VAR_INPUT
+	left : PVOID;
+	right : PVOID;
+END_VAR
+VAR
+	leftPointer : POINTER TO TIME_OF_DAY; 
+	rightPointer : POINTER TO TIME_OF_DAY; 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF left = 0 AND right = 0 THEN
+	Compare := COMPARISION_RESULT.EQUALS;
+	RETURN;
+END_IF
+
+IF left = 0 THEN
+	Compare := COMPARISION_RESULT.LEFT_LESS_RIGHT;
+	RETURN;	
+END_IF
+
+IF right = 0 THEN
+	Compare := COMPARISION_RESULT.LEFT_GREATER_RIGHT;
+	RETURN;	
+END_IF
+
+leftPointer := left;
+rightPointer := right;
+
+IF leftPointer^ < rightPointer^ THEN
+	Compare := COMPARISION_RESULT.LEFT_LESS_RIGHT;
+ELSIF leftPointer^ > rightPointer^ THEN
+	Compare := COMPARISION_RESULT.LEFT_GREATER_RIGHT;
+ELSE
+	Compare := COMPARISION_RESULT.EQUALS;	
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

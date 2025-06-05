@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="Enumerator" Id="{1ba2dded-f68b-058f-2c2a-52c4eba159dc}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'no_explicit_call' := 'do not call this function block directly'} 
+FUNCTION_BLOCK ABSTRACT Enumerator EXTENDS Object IMPLEMENTS IEnumerator
+VAR
+	_CurrentIndex : DINT := -1;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="Current" Id="{ee0b79eb-0bf9-0862-23fc-a4125a07061d}">
+      <Declaration><![CDATA[// Shows curent collection element
+PROPERTY ABSTRACT Current : PVOID]]></Declaration>
+      <Get Name="Get" Id="{3a2ce99c-cf70-0aca-02a4-2206750aa89d}">
+        <Declaration><![CDATA[]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="MoveNext" Id="{a7e98f26-ff1f-0da4-0d33-c119f7486eaa}">
+      <Declaration><![CDATA[{attribute "object_name" := "MoveNext"}
+// Moves Current pointer to next collection element
+METHOD ABSTRACT MoveNext : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{cf4a0ab3-611e-0cee-0831-cedc404a7abd}">
+      <Declaration><![CDATA[{attribute "object_name" := "Reset"}
+// Sets the enumerator to its initial position, which is before the first element in the collection
+METHOD Reset
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_CurrentIndex := -1;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

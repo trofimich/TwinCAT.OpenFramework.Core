@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="IEnumerator" Id="{003d33a5-070b-07a7-317a-b66cff06678f}">
+    <Declaration><![CDATA[INTERFACE IEnumerator EXTENDS IObject]]></Declaration>
+    <Property Name="Current" Id="{0e28ad9d-3061-0fd1-1451-fffc6356654b}">
+      <Declaration><![CDATA[// Shows curent collection element
+PROPERTY ABSTRACT Current : PVOID]]></Declaration>
+      <Get Name="Get" Id="{f385e541-58c2-036e-3083-5b9dd71f64a7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="MoveNext" Id="{548c4f21-9b3a-0f8a-34fc-95200e15899c}">
+      <Declaration><![CDATA[// Moves Current pointer to next collection element
+METHOD MoveNext : BOOL]]></Declaration>
+    </Method>
+    <Method Name="Reset" Id="{ed65fb3d-55e2-06ca-1906-cc193c654313}">
+      <Declaration><![CDATA[// Sets the enumerator to its initial position, which is before the first element in the collection
+METHOD Reset
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

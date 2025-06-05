@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="StandardComparers" Id="{6a24e5e9-4e1e-4398-9b08-822795a00fd7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM StandardComparers
+VAR
+	_BoolComparer : BoolComparer;
+	_ByteComparer : ByteComparer;
+	_WordComparer : WordComparer;
+	_DWordComparer : DWordComparer;
+	_LWordComparer : LWordComparer;
+	_SIntComparer : SIntComparer;
+	_USIntComparer : USIntComparer;
+	_IntComparer : IntComparer;
+	_UIntComparer : UIntComparer;
+	_DIntComparer : DIntComparer;
+	_UDIntComparer : UDIntComparer;
+	_LIntComparer : LIntComparer;
+	_ULIntComparer : ULIntComparer;
+	_UXIntComparer : UXIntComparer;
+	_XIntComparer : XIntComparer;
+	_XWordComparer : XWordComparer;	
+	_RealComparer : RealComparer;
+	_LRealComparer : LRealComparer;		
+	_StringComparer : StringComparer;
+	_WStringComparer : WStringComparer;
+	_TimeComparer : TimeComparer;
+	_LTimeComparer : LTimeComparer;
+	_DateComparer : DateComparer;
+	_DateAndTimeComparer : DateAndTimeComparer;
+	_LDateAndTimeComparer : DateAndTimeComparer;
+	_TimeOfDayComparer : TimeOfDayComparer;	
+	_LTimeOfDayComparer : LTimeOfDayComparer;	
+	_PointerComparer : PointerComparer;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="GetForType" Id="{6b7c2526-92eb-4f0c-87c8-0829d2702e91}">
+      <Declaration><![CDATA[METHOD GetForType : IComparer
+VAR_INPUT
+	pointerType : POINTER_TYPE;
+END_VAR
+VAR
+	exception : ArgumentOutOfRangeException();
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE pointerType OF
+	POINTER_TYPE.BOOL_POINTER:
+		GetForType := _BoolComparer;
+	POINTER_TYPE.BYTE_POINTER:
+		GetForType := _ByteComparer;
+	POINTER_TYPE.WORD_POINTER:
+		GetForType := _WordComparer;
+	POINTER_TYPE.DWORD_POINTER:
+		GetForType := _DWordComparer;
+	POINTER_TYPE.LWORD_POINTER:
+		GetForType := _LWordComparer;
+	POINTER_TYPE.SINT_POINTER:
+		GetForType := _SIntComparer;
+	POINTER_TYPE.USINT_POINTER:
+		GetForType := _USIntComparer;
+	POINTER_TYPE.INT_POINTER:
+		GetForType := _IntComparer;
+	POINTER_TYPE.UINT_POINTER:
+		GetForType := _UIntComparer;
+	POINTER_TYPE.DINT_POINTER:
+		GetForType := _DIntComparer;
+	POINTER_TYPE.UDINT_POINTER:
+		GetForType := _UDIntComparer;
+	POINTER_TYPE.LINT_POINTER:
+		GetForType := _LIntComparer;
+	POINTER_TYPE.ULINT_POINTER:
+		GetForType := _ULIntComparer;
+	POINTER_TYPE.XINT_POINTER:
+		GetForType := _XIntComparer;
+	POINTER_TYPE.XWORD_POINTER:
+		GetForType := _XWordComparer;
+	POINTER_TYPE.UXINT_POINTER:
+		GetForType := _UXIntComparer;		
+	POINTER_TYPE.REAL_POINTER:
+		GetForType := _RealComparer;
+	POINTER_TYPE.LREAL_POINTER:
+		GetForType := _LRealComparer;
+	POINTER_TYPE.STRING_POINTER:
+		GetForType := _StringComparer;
+	POINTER_TYPE.WSTRING_POINTER:
+		GetForType := _WStringComparer;
+	POINTER_TYPE.TIME_POINTER:
+		GetForType := _TimeComparer;
+	POINTER_TYPE.LTIME_POINTER:
+		GetForType := _LTimeComparer;
+	POINTER_TYPE.DATE_POINTER:
+		GetForType := _DateComparer;
+	POINTER_TYPE.DATE_AND_TIME_POINTER:
+		GetForType := _DateAndTimeComparer;
+	POINTER_TYPE.LDATE_AND_TIME_POINTER:
+		GetForType := _LDateAndTimeComparer;
+	POINTER_TYPE.TIME_OF_DAY_POINTER:
+		GetForType := _TimeOfDayComparer;
+	POINTER_TYPE.LTIME_OF_DAY_POINTER:
+		GetForType := _LTimeOfDayComparer;
+	POINTER_TYPE.UNTYPED_POINTER:
+		GetForType := _PointerComparer;
+	POINTER_TYPE.OBJECT_POINTER:
+		GetForType := _PointerComparer;
+	ELSE
+		exception.Throw(CurrentNamespace.Name, 'StandardComparers', __POUNAME(), __POSITION(), 'pointerType', pointerType);
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

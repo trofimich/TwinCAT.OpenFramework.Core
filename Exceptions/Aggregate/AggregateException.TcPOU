@@ -172,8 +172,8 @@ THIS^.SourceClassName := sourceClassName;
 THIS^.SourceMethodName := SEL(Tc2_Standard.FIND(sourceMethodName, sourceClassName) <> 1, Tc2_Standard.DELETE(sourceMethodName, Tc2_Standard.LEN(sourceClassName) + 1, 1), sourceMethodName); 
 THIS^.SourcePosition := sourcePosition;
 THIS^.Fatal := FALSE;
-THIS^.LocalTimestamp := DateTimeHelper.SystemLocalDateTime;
-THIS^.UtcTimestamp := DateTimeHelper.SystemUtcDateTime;
+THIS^.LocalTimestamp := SystemDateTimeManager.SystemLocalDateTime;
+THIS^.UtcTimestamp := SystemDateTimeManager.SystemUtcDateTime;
 
 FOR i := 0 TO _InnerExceptionCount - 1 DO
 	IF _InnerExceptions[i].Fatal THEN

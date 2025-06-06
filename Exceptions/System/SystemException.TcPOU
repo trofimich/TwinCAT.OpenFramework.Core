@@ -98,8 +98,8 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[THIS^.ExceptionCode := exceptionCode;
-THIS^.LocalTimestamp := DateTimeHelper.SystemLocalDateTime;
-THIS^.UtcTimestamp := DateTimeHelper.SystemUtcDateTime;]]></ST>
+THIS^.LocalTimestamp := SystemDateTimeManager.SystemLocalDateTime;
+THIS^.UtcTimestamp := SystemDateTimeManager.SystemUtcDateTime;]]></ST>
       </Implementation>
     </Method>
   </POU>

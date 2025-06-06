@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="DateTimeHelper" Id="{124f8199-db51-4760-a104-75d67f9b5386}" SpecialFunc="None">
+  <POU Name="SystemDateTimeManager" Id="{124f8199-db51-4760-a104-75d67f9b5386}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'no_explicit_call' := 'do not call this function block directly'} 
-PROGRAM DateTimeHelper
+PROGRAM SystemDateTimeManager
 VAR_OUTPUT
 	{attribute 'OPC.UA.DA.Access' := '1'}
 	MinDateTime : DATE_AND_TIME := DT#1970-01-01-00:00;

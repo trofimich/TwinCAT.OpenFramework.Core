@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="MemoryHelper" Id="{0e9f1872-2dbe-40ab-ba89-2ac8a91e9b35}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM MemoryHelper]]></Declaration>
+  <POU Name="ByteHelper" Id="{0e9f1872-2dbe-40ab-ba89-2ac8a91e9b35}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM ByteHelper]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>

@@ -12,10 +12,18 @@ VAR_INPUT
 	pointerType : POINTER_TYPE;
 END_VAR
 VAR
+	memoryArea : Tc2_System.E_TcMemoryArea;
 	objectPointer : POINTER TO Object;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF value = 0 THEN
+	RETURN;
+END_IF
+
+// check at list first byte of released memory
+memoryArea := Tc2_System.F_CheckMemoryArea(value, 1);
+
+IF memoryArea <> E_TcMemoryArea.Dynamic THEN
 	RETURN;
 END_IF
 
